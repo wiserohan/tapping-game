@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Tap Speed Game</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #222;
+      color: #eee;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+      text-align: center;
+      padding: 20px;
+    }
+    #tapBtn {
+      padding: 20px 40px;
+      font-size: 2rem;
+      background: #0d6efd;
+      border: none;
+      border-radius: 10px;
+      color: white;
+      cursor: pointer;
+      user-select: none;
+      margin: 20px 0;
+      transition: background 0.3s;
+    }
+    #tapBtn:active {
+      background: #0056b3;
+    }
+    #timer, #score {
+      font-size: 1.5rem;
+      margin: 10px 0;
+    }
+    #message {
+      margin-top: 20px;
+      font-size: 1.2rem;
+    }
+  </style>
+</head>
+<body>
+  <h1>Tap Speed Game</h1>
+  <p>Tap the button as many times as you can in 10 seconds!</p>
+  <button id="tapBtn">Tap me!</button>
+  <div id="timer">Time left: 10</div>
+  <div id="score">Score: 0</div>
+  <div id="message"></div>
+
+  <script>
+    let timeLeft = 10;
+    let score = 0;
+    const timerEl = document.getElementById('timer');
+    const scoreEl = document.getElementById('score');
+    const messageEl = document.getElementById('message');
+    const tapBtn = document.getElementById('tapBtn');
+    let gameStarted = false;
+    let interval;
+
+    function startGame() {
+      gameStarted = true;
+      score = 0;
+      timeLeft = 10;
+      scoreEl.textContent = 'Score: 0';
+      timerEl.textContent = 'Time left: 10';
+      messageEl.textContent = '';
+      tapBtn.disabled = false;
+
+      interval = setInterval(() => {
+        timeLeft--;
+        timerEl.textContent = 'Time left: ' + timeLeft;
+        if (timeLeft <= 0) {
+          clearInterval(interval);
+          endGame();
+        }
+      }, 1000);
+    }
+
+    function endGame() {
+      tapBtn.disabled = true;
+      messageEl.textContent = `Game over! Your score is ${score}. Tap button to play again.`;
+      gameStarted = false;
+    }
+
+    tapBtn.addEventListener('click', () => {
+      if (!gameStarted) {
+        startGame();
+      }
+      if (gameStarted && timeLeft > 0) {
+        score++;
+        scoreEl.textContent = 'Score: ' + score;
+      }
+    });
+  </script>
+</body>
+</html>
